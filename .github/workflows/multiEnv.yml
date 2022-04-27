@@ -7,9 +7,33 @@ on:
     branches: [dev]
 
 jobs:
-
-  #first job DEV
-  DEV:
+  #first job build
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout the files
+      uses: actions/checkout@v3
+    - name: use node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 14
+    - name: install dipendencies
+      run: npm install
+    - name: run test
+      run: npm test
+    
+  #second job test with Sonarqube 
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: SonarQube Scan
+      uses: monstar-lab-oss/sonarqube-github-action@v1.0.1
+      with:
+        url: ${{ secrets.SONARQUBE_HOST }}
+        token: ${{ secrets.SONARQUBE_TOKEN }}
+        
+  #third job deploy_to_DEV
+  deploy_to_DEV:
     runs-on: ubuntu-latest
     environment: DEV
     steps:
@@ -33,11 +57,11 @@ jobs:
       HOST_USER: ${{secrets.USERNAME}}
       TARGET: ${{secrets.TARGET_PATH_DEV}}
   
-  #second job PROD
+  #fourth job deploy_to_PROD
   PROD:
     runs-on: ubuntu-latest
     environment: PROD
-    needs: DEV
+    needs: deploy_to_DEV
     steps:
 
     - name: Checkout the files
@@ -61,4 +85,4 @@ jobs:
       TARGET: ${{secrets.TARGET_PATH_UAT}} 
 
 
-      CI: false 
+    
