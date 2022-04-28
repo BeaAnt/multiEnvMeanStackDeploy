@@ -23,21 +23,12 @@ jobs:
         cd frontend
         npm test
     
-  #second job test with Sonarqube 
-  test:
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-    - name: SonarQube Scan
-      uses: monstar-lab-oss/sonarqube-github-action@v1.0.1
-      with:
-        url: ${{ secrets.SONARQUBE_HOST }}
-        token: ${{ secrets.SONARQUBE_TOKEN }}
+
         
   #third job deploy_to_DEV
   deploy_to_DEV:
     runs-on: ubuntu-latest
-    needs: test
+    needs: build
     environment: DEV
     steps:
     - name: Checkout the files
@@ -61,7 +52,7 @@ jobs:
       TARGET: ${{secrets.TARGET_PATH_DEV}}
   
   #fourth job deploy_to_PROD
-  PROD:
+  deploy_to_PROD:
     runs-on: ubuntu-latest
     environment: PROD
     needs: deploy_to_DEV
