@@ -22,7 +22,7 @@ jobs:
         npm install
         cd frontend
         npm test
-    
+        npm run build
 
         
   #third job deploy_to_DEV
