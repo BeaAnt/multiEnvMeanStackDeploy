@@ -17,10 +17,11 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: 14
-    - name: install dipendencies
-      run: npm install
-    - name: run test
-      run: npm test
+    - name: npm install and test
+      run: |
+        npm install
+        cd frontend
+        npm test
     
   #second job test with Sonarqube 
   test:
