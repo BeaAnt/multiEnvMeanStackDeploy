@@ -19,10 +19,8 @@ jobs:
         node-version: 14
     - name: npm install and test
       run: |
-        npm install
         cd frontend
         npm install
-        npm test
         npm run build
 
         
