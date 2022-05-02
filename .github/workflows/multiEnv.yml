@@ -8,7 +8,7 @@ on:
 
 jobs:
   #first job build
-  build:
+  build_frontend:
     runs-on: ubuntu-latest
     steps:
     - name: checkout the files
@@ -29,10 +29,33 @@ jobs:
         name: dist
         path: frontend/dist
         
+  #fourth job deploy_to_PROD
+  deploy_backend:
+    runs-on: ubuntu-latest
+    environment: DEV
+    needs: build_frontend
+    steps:
+
+    - name: Checkout the files
+      uses: actions/checkout@v1   
+    - name: Deploy backend in development environment
+      run: |
+          which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y  )
+          which rsync || ( apt-get update -y && apt-get install rsync -y )
+          eval $(ssh-agent -s)
+          ssh-add <(echo "$SSH_PRIVATE_KEY" )
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan $SERVER_IP >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+          scp -r backend $HOST_USER@$SERVER_IP:$TARGET_BACKEND
+          cd /opt/back-end
+          pm2 start server.js
+        
   #third job deploy_to_DEV
   deploy_to_DEV:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build_frontend
     environment: DEV
     steps:
     - name: Checkout the files
