@@ -23,6 +23,7 @@ jobs:
         npm install
         npm run build
 
+
         
   #third job deploy_to_DEV
   deploy_to_DEV:
@@ -30,8 +31,7 @@ jobs:
     needs: build
     environment: DEV
     steps:
-    - name: Checkout the files
-      uses: actions/checkout@v1
+
 
     - name: Deploy in development environment
       run: |
@@ -43,7 +43,7 @@ jobs:
           chmod 700 ~/.ssh
           ssh-keyscan $SERVER_IP >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
-          scp -r * $HOST_USER@$SERVER_IP:$TARGET
+          scp -r ./dist/multiEnvMeanStackDeploy $HOST_USER@$SERVER_IP:$TARGET
     env:
       SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY_DEV}}
       SERVER_IP: ${{secrets.HOST_DNS_DEV}}
