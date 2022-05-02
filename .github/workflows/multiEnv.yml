@@ -27,7 +27,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: deploy_dist
-        path: frontend
+        path: frontend/dist
         
   #third job deploy_to_DEV
   deploy_to_DEV:
