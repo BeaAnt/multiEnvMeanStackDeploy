@@ -29,7 +29,7 @@ jobs:
         name: dist
         path: frontend/dist
         
-  #fourth job deploy_to_PROD
+  #second job deploy backend in development environment
   deploy_backend:
     runs-on: ubuntu-latest
     environment: DEV
@@ -77,10 +77,8 @@ jobs:
           ssh-keyscan $SERVER_IP >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
           scp -r dist $HOST_USER@$SERVER_IP:$TARGET_FRONTEND
-          
         
-
-      env:
+    env:
         SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY_DEV}}
         SERVER_IP: ${{secrets.HOST_DNS_DEV}}
         HOST_USER: ${{secrets.USERNAME}}
