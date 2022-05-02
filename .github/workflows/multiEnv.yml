@@ -53,7 +53,7 @@ jobs:
           chmod 700 ~/.ssh
           ssh-keyscan $SERVER_IP >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
-          scp -r deploy_dist/multiEnvMeanStackDeploy/multiEnvMeanStackDeploy/frontend $HOST_USER@$SERVER_IP:$TARGET
+          scp -r deploy_dist/multiEnvMeanStackDeploy/frontend $HOST_USER@$SERVER_IP:$TARGET
     env:
       SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY_DEV}}
       SERVER_IP: ${{secrets.HOST_DNS_DEV}}
