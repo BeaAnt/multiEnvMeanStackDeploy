@@ -41,7 +41,7 @@ jobs:
     - name: Download build
       uses: actions/download-artifact@v1
       with:
-        name: deploy_dist
+        name: dist
 
     - name: Deploy in development environment
       run: |
