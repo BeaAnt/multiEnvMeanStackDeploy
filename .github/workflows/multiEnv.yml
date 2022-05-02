@@ -10,9 +10,6 @@ jobs:
   #first job build
   build:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./
     steps:
     - name: checkout the files
       uses: actions/checkout@v3
@@ -25,11 +22,26 @@ jobs:
         cd frontend
         npm install
         npm run build
-
-
+    - name: Upload artifact for deployment job
+      if: success()
+      uses: actions/upload-artifact@v1
+      with:
+        name: deploy_dist
+        path: dist
         
-
-
+  #third job deploy_to_DEV
+  deploy_to_DEV:
+    runs-on: ubuntu-latest
+    needs: build
+    environment: DEV
+    steps:
+    - name: Checkout the files
+      uses: actions/checkout@v1
+      
+    - name: Download build
+      uses: actions/download-artifact@v1
+      with:
+        name: deploy_dist
 
     - name: Deploy in development environment
       run: |
@@ -41,7 +53,7 @@ jobs:
           chmod 700 ~/.ssh
           ssh-keyscan $SERVER_IP >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
-          scp -r ./dist/ $HOST_USER@$SERVER_IP:$TARGET
+          scp -r deploy_dist/multiEnvMeanStackDeploy/multiEnvMeanStackDeploy/frontend $HOST_USER@$SERVER_IP:$TARGET
     env:
       SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY_DEV}}
       SERVER_IP: ${{secrets.HOST_DNS_DEV}}
