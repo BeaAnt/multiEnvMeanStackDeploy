@@ -43,7 +43,7 @@ jobs:
       with:
         name: dist
 
-    - name: Deploy in development environment
+    - name: Deploy frontend in development environment
       run: |
           which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y  )
           which rsync || ( apt-get update -y && apt-get install rsync -y )
@@ -53,12 +53,29 @@ jobs:
           chmod 700 ~/.ssh
           ssh-keyscan $SERVER_IP >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
-          scp -r dist $HOST_USER@$SERVER_IP:$TARGET
-    env:
-      SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY_DEV}}
-      SERVER_IP: ${{secrets.HOST_DNS_DEV}}
-      HOST_USER: ${{secrets.USERNAME}}
-      TARGET: ${{secrets.TARGET_PATH_DEV}}
+          scp -r dist $HOST_USER@$SERVER_IP:$TARGET_FRONTEND
+          
+        
+      
+    - name: Deploy backend in development environment
+      run: |
+          which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y  )
+          which rsync || ( apt-get update -y && apt-get install rsync -y )
+          eval $(ssh-agent -s)
+          ssh-add <(echo "$SSH_PRIVATE_KEY" )
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan $SERVER_IP >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+          scp -r backend $HOST_USER@$SERVER_IP:$TARGET_BACKEND
+          cd /opt/back-end
+          pm2 start server.js
+      env:
+        SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY_DEV}}
+        SERVER_IP: ${{secrets.HOST_DNS_DEV}}
+        HOST_USER: ${{secrets.USERNAME}}
+        TARGET_FRONTEND: ${{secrets.TARGET_PATH_DEV}}
+        TARGET_BACKEND: ${{secrets.TARGET_PATH_B}}
   
 
 
