@@ -26,7 +26,7 @@ jobs:
       if: success()
       uses: actions/upload-artifact@v1
       with:
-        name: deploy_dist
+        name: dist
         path: frontend/dist
         
   #third job deploy_to_DEV
