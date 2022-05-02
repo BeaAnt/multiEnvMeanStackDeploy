@@ -27,7 +27,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: deploy_dist
-        path: dist
+        path: frontend
         
   #third job deploy_to_DEV
   deploy_to_DEV:
@@ -53,7 +53,7 @@ jobs:
           chmod 700 ~/.ssh
           ssh-keyscan $SERVER_IP >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
-          scp -r deploy_dist/angular-8-registration-login-example $HOST_USER@$SERVER_IP:$TARGET
+          scp -r deploy_dist $HOST_USER@$SERVER_IP:$TARGET
     env:
       SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY_DEV}}
       SERVER_IP: ${{secrets.HOST_DNS_DEV}}
