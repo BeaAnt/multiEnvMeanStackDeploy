@@ -56,17 +56,7 @@ jobs:
           scp -r dist $HOST_USER@$SERVER_IP:$TARGET_FRONTEND
           scp -r backend $HOST_USER@$SERVER_IP:$TARGET_BACKEND
           
-    - name: Run sshpass commands to Starting the NodeJS Application
-      uses: matheusvanzan/sshpass-action@v2
-      with:
-        host: ${{ secrets.HOST_DNS_DEV }}
-        user: ${{ secrets.USERNAME }}
-        key: ${{ secrets.SSH_PRIVATE_KEY_DEV }}
-        run: |
-          cd /var/www/multiEnvMeanStackDeploy/backend
-          npm install
-          pm2 start server.js
-          pm2 restart server.js
+
         
     env:
         SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY_DEV}}
