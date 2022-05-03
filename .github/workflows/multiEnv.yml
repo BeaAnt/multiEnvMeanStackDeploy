@@ -49,6 +49,9 @@ jobs:
           ssh-keyscan $SERVER_IP >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
           scp -r backend $HOST_USER@$SERVER_IP:$TARGET_BACKEND
+          cd backend
+          npm install
+          pm2 start server.js
           
           
     env:
