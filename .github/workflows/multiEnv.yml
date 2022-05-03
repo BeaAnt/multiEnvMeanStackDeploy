@@ -2,46 +2,21 @@ name: multiEnv
 
 on:
   push:
-    branches: [main]
+    branches: [dev]
   pull_request:
-    branches: [main]
+    branches: [dev]
 
 jobs:
-  #first job: build frontend application
-  build_frontend:
-    runs-on: ubuntu-latest
-    steps:
-    - name: checkout the files
-      uses: actions/checkout@v3
-    - name: use node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 14
-    - name: npm install and build
-      run: |
-        cd frontend
-        npm install
-        npm run build
-    - name: Upload artifact for deployment job
-      if: success()
-      uses: actions/upload-artifact@v1
-      with:
-        name: dist
-        path: frontend/dist
+
         
   #second job: deploy MEAN Stack application to DEV environment
   deploy_MeanStack_App:
     runs-on: ubuntu-latest
-    needs: build_frontend
     environment: DEV
     steps:
     - name: Checkout the files
       uses: actions/checkout@v1
-      
-    - name: Download build
-      uses: actions/download-artifact@v1
-      with:
-        name: dist
+
 
     - name: Deploy frontend and backend in development environment
       run: |
