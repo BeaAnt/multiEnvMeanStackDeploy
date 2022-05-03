@@ -48,7 +48,7 @@ jobs:
         user: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY_DEV }}
         run: |
-          scp -r backend $HOST_USER@$SERVER_IP:$TARGET_BACKEND
+          cp -r backend $HOST_USER@$SERVER_IP:$TARGET_BACKEND
           cd /var/www/multiEnvMeanStackDeploy/backend
           npm install
           pm2 start server.js
