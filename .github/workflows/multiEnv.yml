@@ -49,8 +49,8 @@ jobs:
           ssh-keyscan $SERVER_IP >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
           scp -r backend $HOST_USER@$SERVER_IP:$TARGET_BACKEND
-          npm install pm2@latest -g
-          pm2 start /opt/back-end/backend/server.js
+          
+          
     env:
         SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY_DEV}}
         SERVER_IP: ${{secrets.HOST_DNS_DEV}}
@@ -87,7 +87,7 @@ jobs:
         SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY_DEV}}
         SERVER_IP: ${{secrets.HOST_DNS_DEV}}
         HOST_USER: ${{secrets.USERNAME}}
-        TARGET_FRONTEND: ${{secrets.TARGET_PATH_DEV}}
+        TARGET_FRONTEND: ${{secrets.TARGET_PATH_F}}
         
   
 
