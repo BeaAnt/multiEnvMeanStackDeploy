@@ -48,7 +48,6 @@ jobs:
         user: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY_DEV }}
         run: |
-          
           cd /var/www/multiEnvMeanStackDeploy/backend
           npm install
           pm2 start server.js
