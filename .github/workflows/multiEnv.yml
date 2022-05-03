@@ -33,7 +33,7 @@ jobs:
   deploy_backend:
     runs-on: ubuntu-latest
     environment: DEV
-    needs: build_frontend
+    needs: deploy_frontend
     steps:
 
     - name: Checkout the files
@@ -48,7 +48,7 @@ jobs:
         user: ${{ secrets.USERNAME }}
         key: ${{ secrets.SSH_PRIVATE_KEY_DEV }}
         run: |
-          cp -r backend $HOST_USER@$SERVER_IP:$TARGET_BACKEND
+          
           cd /var/www/multiEnvMeanStackDeploy/backend
           npm install
           pm2 start server.js
@@ -58,7 +58,7 @@ jobs:
         SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY_DEV}}
         SERVER_IP: ${{secrets.HOST_DNS_DEV}}
         HOST_USER: ${{secrets.USERNAME}}
-        TARGET_BACKEND: ${{secrets.TARGET_PATH_B}}
+        
         
   #third job deploy_to_DEV
   deploy_frontend:
@@ -85,13 +85,14 @@ jobs:
           ssh-keyscan $SERVER_IP >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
           scp -r dist $HOST_USER@$SERVER_IP:$TARGET_FRONTEND
+          scp -r backend $HOST_USER@$SERVER_IP:$TARGET_BACKEND
         
     env:
         SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY_DEV}}
         SERVER_IP: ${{secrets.HOST_DNS_DEV}}
         HOST_USER: ${{secrets.USERNAME}}
         TARGET_FRONTEND: ${{secrets.TARGET_PATH_F}}
-        
+        TARGET_BACKEND: ${{secrets.TARGET_PATH_B}}
   
 
 
