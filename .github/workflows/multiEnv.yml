@@ -49,8 +49,7 @@ jobs:
           ssh-keyscan $SERVER_IP >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
           scp -r backend $HOST_USER@$SERVER_IP:$TARGET_BACKEND
-          cd /opt/back-end/backend
-          pm2 start server.js
+          pm2 start /opt/back-end/backend/server.js
     env:
         SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY_DEV}}
         SERVER_IP: ${{secrets.HOST_DNS_DEV}}
