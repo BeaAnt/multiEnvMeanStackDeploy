@@ -49,10 +49,19 @@ jobs:
           ssh-keyscan $SERVER_IP >> ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
           scp -r backend $HOST_USER@$SERVER_IP:$TARGET_BACKEND
-          cd backend
+
+         # Your SSH step
+    - name: Run sshpass commands
+      uses: matheusvanzan/sshpass-action@v2
+      with:
+        host: ${{ secrets.HOST_DNS_DEV }}
+        user: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY_DEV }}
+        run: |
+          cd /var/www/multiEnvMeanStackDeploy/backend
           npm install
           pm2 start server.js
-          
+            
           
     env:
         SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY_DEV}}
