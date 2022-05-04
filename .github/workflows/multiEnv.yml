@@ -71,6 +71,7 @@ jobs:
         run: |
           cd /var/www/multiEnvMeanStackDeploy/backend
           npm install
+          pm2 start server.js
           pm2 restart server.js 
         
   #thirth job: deploy MEAN Stack application to PROD environment
@@ -116,5 +117,6 @@ jobs:
         run: |
           cd /var/www/multiEnvMeanStackDeployProd/backend
           npm install
+          pm2 start server.js
           pm2 restart server.js 
 
