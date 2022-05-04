@@ -55,16 +55,25 @@ jobs:
           chmod 644 ~/.ssh/known_hosts
           scp -r dist $HOST_USER@$SERVER_IP:$TARGET_FRONTEND
           scp -r backend $HOST_USER@$SERVER_IP:$TARGET_BACKEND
-          
-        
-    env:
+      env:
         SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY_DEV}}
         SERVER_IP: ${{secrets.HOST_DNS_DEV}}
         HOST_USER: ${{secrets.USERNAME}}
         TARGET_FRONTEND: ${{secrets.TARGET_PATH_F}}
         TARGET_BACKEND: ${{secrets.TARGET_PATH_B}}
         
-  #fourth job deploy_to_PROD
+    - name: Run sshpass commands to Starting the NodeJS Application
+      uses: matheusvanzan/sshpass-action@v2
+      with:
+        host: ${{ secrets.HOST_DNS_DEV }}
+        user: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY_DEV }}
+        run: |
+          cd /var/www/multiEnvMeanStackDeploy/backend
+          npm install
+          pm2 restart server.js 
+        
+  #thirth job: deploy MEAN Stack application to PROD environment
   deploy_to_PROD:
     runs-on: ubuntu-latest
     environment: PROD
@@ -91,10 +100,21 @@ jobs:
           chmod 644 ~/.ssh/known_hosts
           scp -r dist $HOST_USER@$SERVER_IP:$TARGET_FRONTEND
           scp -r backend $HOST_USER@$SERVER_IP:$TARGET_BACKEND
-    env:
-      SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY_UAT}}
-      SERVER_IP: ${{secrets.HOST_DNS_UAT}}
-      HOST_USER: ${{secrets.USERNAME}}
-      TARGET_FRONTEND: ${{secrets.TARGET_PATH_PROD_F}}
-      TARGET_BACKEND: ${{secrets.TARGET_PATH_PROD_B}} 
+      env:
+          SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY_UAT}}
+          SERVER_IP: ${{secrets.HOST_DNS_UAT}}
+          HOST_USER: ${{secrets.USERNAME}}
+          TARGET_FRONTEND: ${{secrets.TARGET_PATH_PROD_F}}
+          TARGET_BACKEND: ${{secrets.TARGET_PATH_PROD_B}} 
+      
+    - name: Run sshpass commands to Starting the NodeJS Application
+      uses: matheusvanzan/sshpass-action@v2
+      with:
+        host: ${{ secrets.HOST_DNS_UAT }}
+        user: ${{ secrets.USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY_UAT }}
+        run: |
+          cd /var/www/multiEnvMeanStackDeployProd/backend
+          npm install
+          pm2 restart server.js 
 
