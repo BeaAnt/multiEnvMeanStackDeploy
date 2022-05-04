@@ -63,4 +63,38 @@ jobs:
         HOST_USER: ${{secrets.USERNAME}}
         TARGET_FRONTEND: ${{secrets.TARGET_PATH_F}}
         TARGET_BACKEND: ${{secrets.TARGET_PATH_B}}
+        
+  #fourth job deploy_to_PROD
+  deploy_to_PROD:
+    runs-on: ubuntu-latest
+    environment: PROD
+    needs: deploy_MeanStack_App
+    steps:
+
+    - name: Checkout the files
+      uses: actions/checkout@v1
+      
+    - name: Download build
+      uses: actions/download-artifact@v1
+      with:
+        name: dist
+
+    - name: Deploy in production evnironment
+      run: |
+          which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y  )
+          which rsync || ( apt-get update -y && apt-get install rsync -y )
+          eval $(ssh-agent -s)
+          ssh-add <(echo "$SSH_PRIVATE_KEY" )
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan $SERVER_IP >> ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+          scp -r dist $HOST_USER@$SERVER_IP:$TARGET_FRONTEND
+          scp -r backend $HOST_USER@$SERVER_IP:$TARGET_BACKEND
+    env:
+      SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY_UAT}}
+      SERVER_IP: ${{secrets.HOST_DNS_UAT}}
+      HOST_USER: ${{secrets.USERNAME}}
+      TARGET_FRONTEND: ${{secrets.TARGET_PATH_PROD_F}}
+      TARGET_BACKEND: ${{secrets.TARGET_PATH_PROD_B}} 
 
