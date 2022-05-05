@@ -7,6 +7,17 @@ on:
     branches: [dev]
 
 jobs:
+  #second job test with Sonarqube 
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout the files
+      uses: actions/checkout@v3
+    - name: SonarQube Scan
+      uses: monstar-lab-oss/sonarqube-github-action@v1.0.1
+      with:
+        url: ${{ secrets.SONARQUBE_HOST_URL }}
+        token: ${{ secrets.SONARQUBE_TOKEN }}
   #first job: build frontend application
   build_frontend:
     runs-on: ubuntu-latest
