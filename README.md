@@ -33,8 +33,8 @@ HOST_DNS_DEV  -> Public DNS record of the EC2 instance(development environment)
 HOST_DNS_UAT  -> Public DNS record of the EC2 instance(production environment)  
 TARGET_PATH_F -> remote path where you want to deploy your Frontend code (development environment)       
 TARGET_PATH_B -> remote path where you want to deploy your Backend code (development environment)    
-TARGET_PATH_PROD_F -> remote path where you want to deploy your Frontend code (production environment)
-TARGET_PATH_PROD_B -> remote path where you want to deploy your Backend code (production environment)
+TARGET_PATH_PROD_F -> remote path where you want to deploy your Frontend code (production environment)    
+TARGET_PATH_PROD_B -> remote path where you want to deploy your Backend code (production environment)   
 USERNAME  -> the username of the EC2 instance   
 
 **Create a Github Environments**    
