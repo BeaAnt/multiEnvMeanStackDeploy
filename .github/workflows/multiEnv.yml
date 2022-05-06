@@ -16,10 +16,14 @@ jobs:
       with:
         fetch-depth: 0
     - name: SonarQube Scan
-      uses: monstar-lab-oss/sonarqube-github-action@v1.0.1
-      with:
-        url: ${{ secrets.SONARQUBE_HOST_URL }}
-        token: ${{ secrets.SONARQUBE_TOKEN }}
+      uses : warchant/setup-sonar-scanner@v3  
+    - name : Esegui sonarqube 
+      run : sonar-scanner 
+           -Dsonar.projectKey=samesonar 
+           -Dsonar.sources=$GITHUB_WORKSPACE 
+           -Dsonar.host.url=${{ secrets.SONAR_URL }} 
+           -Dsonar.login=${{ secrets.SONAR_TOKEN }}
+
         
   #second job: build frontend application
   build_frontend:
