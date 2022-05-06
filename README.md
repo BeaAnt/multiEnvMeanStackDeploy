@@ -15,7 +15,7 @@ create 2 deployment environments so that you can push in both development and pr
 **production environment:**     
 1.Create a AWS EC2 instance with an Ubuntu machine image and download the ssh keys    
 2.Install and configure Nginx web server    
-3.Configure UFW
+3.Configure UFW   
 4.Install MongoDB follow link https://www.mongodb.com/docs/manual/tutorial/install-mongodb-on-ubuntu/   
 5.Install Node.js and PM2        
 
@@ -31,8 +31,8 @@ SSH_PRIVATE_KEY_DEV  -> the contents of a PRIVATE part of the SSH key:.pem file 
 SSH_PRIVATE_KEY_UAT  -> the contents of a PRIVATE part of the SSH key: .pem file(production environment)   
 HOST_DNS_DEV  -> Public DNS record of the EC2 instance(development environment)  
 HOST_DNS_UAT  -> Public DNS record of the EC2 instance(production environment)  
-TARGET_PATH_F -> remote path where you want to deploy your Frontend code (development environment)   
-TARGET_PATH_B -> remote path where you want to deploy your Backend code (development environment) 
+TARGET_PATH_F -> remote path where you want to deploy your Frontend code (development environment)       
+TARGET_PATH_B -> remote path where you want to deploy your Backend code (development environment)    
 TARGET_PATH_PROD_F -> remote path where you want to deploy your Frontend code (production environment)
 TARGET_PATH_PROD_B -> remote path where you want to deploy your Backend code (production environment)
 USERNAME  -> the username of the EC2 instance   
