@@ -7,20 +7,24 @@ on:
     branches: [dev]
 
 jobs:
-  #second job test with Sonarqube 
+  #first job: test with Sonarqube 
   test:
     runs-on: ubuntu-latest
     steps:
     - name: checkout the files
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: SonarQube Scan
       uses: monstar-lab-oss/sonarqube-github-action@v1.0.1
       with:
         url: ${{ secrets.SONARQUBE_HOST_URL }}
         token: ${{ secrets.SONARQUBE_TOKEN }}
-  #first job: build frontend application
+        
+  #second job: build frontend application
   build_frontend:
     runs-on: ubuntu-latest
+    needs: test
     steps:
     - name: checkout the files
       uses: actions/checkout@v3
@@ -40,7 +44,7 @@ jobs:
         name: dist
         path: frontend/dist
         
-  #second job: deploy MEAN Stack application to DEV environment
+  #third job: deploy MEAN Stack application to DEV environment
   deploy_MeanStack_App:
     runs-on: ubuntu-latest
     needs: build_frontend
@@ -85,7 +89,7 @@ jobs:
           pm2 start server.js
           pm2 restart server.js 
         
-  #thirth job: deploy MEAN Stack application to PROD environment
+  #fourth job: deploy MEAN Stack application to PROD environment
   deploy_to_PROD:
     runs-on: ubuntu-latest
     environment: PROD
