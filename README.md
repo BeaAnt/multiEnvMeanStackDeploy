@@ -1,4 +1,5 @@
-# multiEnvMeanStackDeploy
+# multiEnvMeanStackDeploy   
+Deploy a MEAN stack webapplication to multiple environment. Use Nginx on AWS Linux instances and configure Github Actions for the website code to get automatically build and deploy. Quality check with SonarQube (test environment)
 
 ## Prerequisites    
 create 2 deployment environments so that you can push in both development and production environments   
@@ -22,7 +23,10 @@ create 2 deployment environments so that you can push in both development and pr
 ## Deploy MEAN Stack Application to Multiple Environments with GitHub Actions        
 
 **Create a repo on Github**   
-1.Create the content/application files for the website    
+1.Create the content/application files for the Mean Stack Application:      
+  (A MEAN Stack application is made up of a front-end app built with Angular that connects to a back-end api built with Node.js + Express + MongoDB)    
+  The backend folder : contains  Node.js + MongoDB API that supports user registration, login with JWT authentication and user management.    
+  The frontend folder : contains an example of how to build a simple user registration and login system using Angular 8   
 2.Create a workflow file: The action must be created inside a .github/workflow/ folder in a root directory for it to be accessible by Github    
 
 **Create a GitHub repository secrets**    
@@ -40,11 +44,14 @@ USERNAME  -> the username of the EC2 instance
 **Create a Github Environments**    
 Click on tab *Settings* of the Github repo, go to *Environments* section. Click *New environment* to create 2 environment:    
 DEV -> to deploy the code in a development environment    
-PROD -> to deploy the code in a production environment. Configure a protection (approval) rule in the environment:The distribution process will be suspended until approval is granted before the PROD run    
+PROD -> to deploy the code in a production environment. Configure a protection (approval) rule in the environment:The distribution process will be suspended until approval is granted before the PROD run       
 
 
-
-Github secret:    
+**Quality check with sonarQube**    
+1. Create a Sonarqube project
+2. Create a sonar-project.properties file in project’s root folder (branch dev): this file contains the project key that identifies the project in the SonarQube service 
+3. Configure a workflow YAML file with https://github.com/marketplace/actions/sonarqube-scanner-action  
+4. Create a Github secret:    
 SONAR_HOST_URL – Required this tells the scanner where SonarQube is hosted    
 SONAR_TOKEN – Required this is the token used to authenticate access to SonarQube   
 
